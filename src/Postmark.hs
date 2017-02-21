@@ -43,7 +43,7 @@ batchUrl = "https://api.postmarkapp.com/email/batch"
 send :: ByteString -> Email -> IO (Either Error PRes.Success)
 send token r = withConnection (establishConnection singleUrl) $ \connection ->
   do
-    sendRequest connection (req batchUrl token) (jsonBody r)
+    sendRequest connection (req singleUrl token) (jsonBody r)
     receiveResponse connection decodeResponse'
 
 sendStream :: ByteString
