@@ -3,8 +3,9 @@
 
 name:                postmark-streams
 version:             0.1.0.0
--- synopsis:            
--- description:         
+synopsis:            Send email via Postmark using io-streams.
+description:
+            Send email via Postmark using io-streams.
 license:             BSD3
 license-file:        LICENSE
 author:              Petter Bergman
@@ -14,6 +15,17 @@ category:            Network
 build-type:          Simple
 extra-source-files:  ChangeLog.md
 cabal-version:       >=1.10
+
+
+source-repository head
+  type:              git
+  location:          git://github.com/jonpetterbergman/pidfile.git
+source-repository this
+  type:              git
+  location:          git://github.com/jonpetterbergman/pidfile.git
+  tag:               v0.1.0.0
+                     
+                     
 
 library
   exposed-modules:     Postmark,

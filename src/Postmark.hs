@@ -1,4 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
+-- |
+-- Module: $HEADER$
+--
+-- Send email via Postmark using io-streams.       
 module Postmark(send,sendStream,Error(..)) where
 
 import           Control.Applicative          ((<|>))
@@ -30,8 +34,9 @@ import           System.IO.Streams.Attoparsec (parseFromStream)
 import qualified System.IO.Streams.Attoparsec as AStreams
 import           System.IO.Streams.Debug      (debugInputBS, debugOutput)
 
+-- | Error type
 data Error =
-    Raw StatusCode ByteString
+    Raw StatusCode ByteString 
   | API PRes.Error deriving Show
 
 singleUrl :: ByteString
@@ -40,12 +45,17 @@ singleUrl = "https://api.postmarkapp.com/email"
 batchUrl :: ByteString
 batchUrl = "https://api.postmarkapp.com/email/batch"
 
+-- | @'send' token email@ sends a single mail via Postmark.
+--   @token@ is your Postmark server token or the test-token,
+--   \"POSTMARK_API_TEST\" for testing purposes.
 send :: ByteString -> Email -> IO (Either Error PRes.Success)
 send token r = withConnection (establishConnection singleUrl) $ \connection ->
   do
     sendRequest connection (req singleUrl token) (jsonBody r)
     receiveResponse connection decodeResponse'
 
+-- | @'sendStream' token build process@ sends a stream of emails
+--   via Postmark's batch email API.
 sendStream :: ByteString
            -> (OutputStream Email -> IO ())
            -> (InputStream (Either PRes.Error PRes.Success) -> IO r)

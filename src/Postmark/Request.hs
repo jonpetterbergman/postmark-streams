@@ -1,5 +1,9 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Postmark.Request where
+-- |
+-- Module: $HEADER$
+--
+-- Postmark email requests.
+module Postmark.Request(Email(..),TrackLinks(..),Attachment(..),Body(..)) where
 
 import           Data.Aeson             (ToJSON (..), Value (..), object, (.=))
 import           Data.Aeson.Types       (Pair)
@@ -8,6 +12,7 @@ import qualified Data.ByteString.Base64 as Base64
 import           Data.Text              (Text, intercalate)
 import           Data.Text.Encoding     (decodeUtf8)
 
+-- | Body can be html, plain-text or both
 data Body =
     Html Text
   | Plain Text
@@ -22,6 +27,7 @@ encHeaders :: [(Text,Text)] -> Value
 encHeaders = toJSON . map go
   where go (k,v) = object ["Name" .= k,"Value" .= v]
 
+-- | Activate link-tracking for the selected body types.
 data TrackLinks =
     None
   | HtmlAndText
@@ -34,6 +40,7 @@ encTrackLinks HtmlAndText = "HtmlAndText"
 encTrackLinks HtmlOnly    = "HtmlOnly"
 encTrackLinks TextOnly    = "TextOnly"
 
+-- | The type of attachments.
 data Attachment =
   Attachment {
     name        :: Text
@@ -46,6 +53,7 @@ instance ToJSON Attachment where
      "Content" .= (decodeUtf8 $ Base64.encode $ content a),
      "ContentType" .= contentType a]
 
+-- | The type of email requests.
 data Email =
   Email {
     from        :: Text
