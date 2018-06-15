@@ -8,3 +8,7 @@
 
 * A number of version bumps
 * source repository information corrected
+
+## 0.1.0.1 -- 2018-06-15
+
+* Version bumps	
