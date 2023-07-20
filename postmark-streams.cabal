@@ -2,7 +2,7 @@
 -- documentation, see http://haskell.org/cabal/users-guide/
 
 name:                postmark-streams
-version:             0.1.0.3
+version:             0.1.0.4
 synopsis:            Send email via Postmark using io-streams.
 description:
             Send email via Postmark using io-streams.
@@ -23,7 +23,7 @@ source-repository head
 source-repository this
   type:              git
   location:          git://github.com/jonpetterbergman/postmark-streams.git
-  tag:               v0.1.0.3
+  tag:               v0.1.0.4
                      
                      
 

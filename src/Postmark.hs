@@ -51,7 +51,7 @@ batchUrl = "https://api.postmarkapp.com/email/batch"
 send :: ByteString -> Email -> IO (Either Error PRes.Success)
 send token r = withConnection (establishConnection singleUrl) $ \connection ->
   do
-    sendRequest connection (req singleUrl token) (jsonBody r)
+    sendRequest connection (req singleUrl token) (jsonBodyP r)
     receiveResponse connection decodeResponse'
 
 -- | @'sendStream' token build process@ sends a stream of emails
@@ -72,8 +72,8 @@ req url token = buildRequest1 $ do
   setContentType "application/json"
   setHeader "X-Postmark-Server-Token" token
 
-jsonBody :: ToJSON a => a -> OutputStream Builder -> IO ()
-jsonBody v o = write (Just $ Builder.fromLazyByteString $ encode v) o
+jsonBodyP :: ToJSON a => a -> OutputStream Builder -> IO ()
+jsonBodyP v o = write (Just $ Builder.fromLazyByteString $ encode v) o
 
 decodeResponse :: (InputStream ByteString -> IO r)
                -> Response
